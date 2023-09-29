@@ -6,7 +6,7 @@
 #    By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/10 11:03:03 by laugarci          #+#    #+#              #
-#    Updated: 2023/07/31 09:39:36 by laugarci         ###   ########.fr        #
+#    Updated: 2023/09/29 14:42:10 by laugarci         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = philo
 
 SRC_DIR = src/
 
-SRC_FILES = philo.c atol.c parse_input.c create_philo.c create_threads.c
+SRC_FILES = philo.c atol.c parse_input.c create_philo.c create_threads.c utils.c
 
 OBJ_DIR = objs/
 

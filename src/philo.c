@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 10:39:49 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/28 18:19:00 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/29 14:51:21 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,11 @@ int	start_vars(char **av, t_info *info)
 
 long get_time()
 {
-	struct timeval current_time;
+	struct timeval time;
 
-	return (gettimeofday(&current_time, NULL));
+	
+	gettimeofday(&time, NULL);
+	return (time.tv_sec * 1000 + time.tv_usec / 1000);
 }
 
 int	main(int ac, char **av)
@@ -78,7 +80,5 @@ int	main(int ac, char **av)
 		return (1);
 	start_vars(av, &info);
 	create_philosphers(&philo, &info);
-	info.start_time = get_time();
-	printf("time >> %ld\n", info.start_time);
-//	create_threads(philo, info);
+	create_threads(philo, info);
 }

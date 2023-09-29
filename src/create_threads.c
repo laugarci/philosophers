@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 10:45:38 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/28 18:02:05 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/29 14:55:33 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,22 @@
 	pthread_exit(NULL);
 }*/
 
-void	*print_eating(void *num)
+/*void	*print_eating(void *num)
 {
 	long id = (long)num;
 	printf("%ld is eating\n", id);
 	pthread_exit(NULL);
-}
+}*/
 
 /*void	start_dinner(void *thead_id)
 {
 	
 }*/
+
+void	start_routine()
+{
+	
+}
 
 int	create_threads(t_philo *philo, t_info *info)
 {
@@ -42,7 +47,7 @@ int	create_threads(t_philo *philo, t_info *info)
 	i = 1;
 	while (42)
 	{
-		rc = pthread_create(&threads[i], NULL, print_eating, (void *)tmp->philo_id);
+		rc = pthread_create(&threads[i], NULL, start_routine, (void *)tmp->philo_id);
 		usleep(10000);
 		if (rc  < 0)
 			return (-1);
