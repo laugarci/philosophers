@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 10:40:50 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/29 14:55:35 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/30 12:40:51 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 #define AMARILLO_T "\x1b[33m"
 #define AZUL_T     "\x1b[34m"
 
-struct t_info {
+typedef struct t_info {
 	int		num_philo;
 	int		time_to_die;
 	int		time_to_eat;
