@@ -6,31 +6,11 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 10:39:49 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/30 12:40:43 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/30 18:09:13 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-void	create_philosphers(t_philo **philo, t_info *info)
-{
-	int		i;
-	t_philo	*new;
-	t_philo	*last;
-
-	i = 1;
-	while (i <= info->num_philo)
-	{
-		new = ft_lstnew(i);
-		ft_lstadd_back(philo, new);
-		i++;
-	}
-	if (*philo)
-	{
-		last = ft_lstlast(*philo);
-		last->next = *philo;
-	}
-}
 
 int	start_vars(char **av, t_info *info)
 {
@@ -63,7 +43,6 @@ long get_time()
 {
 	struct timeval time;
 
-	
 	gettimeofday(&time, NULL);
 	return (time.tv_sec * 1000 + time.tv_usec / 1000);
 }
@@ -71,14 +50,12 @@ long get_time()
 int	main(int ac, char **av)
 {
 	t_info	info;
-	t_philo	*philo;
+	t_philo	philo;
 
-	philo = NULL;
 	if (ac != 5 && ac != 6)
 		return (0);
 	if (parse_input(av) == -1)
 		return (1);
 	start_vars(av, &info);
-	create_philosphers(&philo, &info);
-	create_threads(philo, info);
+	create_threads(&philo, info);
 }

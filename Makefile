@@ -6,7 +6,7 @@
 #    By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/10 11:03:03 by laugarci          #+#    #+#              #
-#    Updated: 2023/09/29 14:42:10 by laugarci         ###   ########.fr        #
+#    Updated: 2023/09/30 17:24:42 by laugarci         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = philo
 
 SRC_DIR = src/
 
-SRC_FILES = philo.c atol.c parse_input.c create_philo.c create_threads.c utils.c
+SRC_FILES = philo.c atol.c parse_input.c create_threads.c utils.c
 
 OBJ_DIR = objs/
 
@@ -28,7 +28,7 @@ DEPS = $(addprefix $(OBJ_DIR), $(DEP_FILES))
 
 CC = gcc
 
-CFLAGS = -Wall -Wextra -Werror -MMD -pthread
+CFLAGS = -Wall -Wextra -Werror -MMD #-fsanitize=thread -g
 
 RM = rm -f
 

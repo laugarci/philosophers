@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 10:40:50 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/30 12:40:51 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/30 19:07:46 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,22 +36,15 @@ typedef struct t_info {
 }			t_info;
 
 typedef struct t_philo {
-	long				philo_id;
-	int					eat;
-	int					sleep;
-	pthread_mutex_t		*forks;
-	struct t_philo		*next;
-}						t_philo;
+	int						philo_id;
+	int						num_meals;
+	pthread_mutex_t			*left_fork;
+	pthread_mutex_t			*right_fork;
+	pthread_mutex_t			forks;
+	struct t_info			*info;
+}							t_philo;
 
 int			start_vars(char **av, t_info *info);
-
-void		create_philosophers(t_philo **philo, t_info *info);
-
-t_philo		*ft_lstlast(t_philo *philo);
-
-t_philo		*ft_lstnew(int id);
-
-void		ft_lstadd_back(t_philo **philo, t_philo *new);
 
 int			ft_atol(const char *str);
 
@@ -62,5 +55,11 @@ int			parse_input(char **str);
 int			create_threads();
 
 void		print_message(int type);
+
+int			create_threads(t_philo *philo, t_info info);
+
+int			create_all_mutex(t_philo *philo, t_info *info);
+
+
 
 #endif
