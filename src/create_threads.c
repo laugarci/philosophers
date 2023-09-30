@@ -6,11 +6,17 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 10:45:38 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/30 19:12:07 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/09/30 19:24:07 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+//incrementar el numero de veces que un philosofo a comido cuando come
+//implementar el tiempo que tienen para hacer cada cosa
+//implementar el muerto si ha pasado mas tiempo del que deberia
+//check si ha pasado mas tiempo o si ya ha comido las veces que deberia
+//imprimir el tiempo en ms
 
 int create_all_mutex(t_philo *philo, t_info* info)
 {
@@ -60,8 +66,6 @@ void *start_routine(void *ph)
 		start_think(philo);
 		start_sleep(philo);
 		i++;
-		if (i == 10)
-			break ;
 	}	
 	return (NULL);
 }
