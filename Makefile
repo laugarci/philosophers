@@ -14,7 +14,7 @@ NAME = philo
 
 SRC_DIR = src/
 
-SRC_FILES = philo.c atol.c parse_input.c create_threads.c utils.c
+SRC_FILES = philo.c atol.c parse_input.c create_threads.c
 
 OBJ_DIR = objs/
 

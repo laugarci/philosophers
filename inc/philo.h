@@ -20,10 +20,11 @@
 # include <pthread.h>
 # include <sys/time.h>
 
-#define ROJO_T     "\x1b[31m"
-#define VERDE_T        "\x1b[32m"
-#define AMARILLO_T "\x1b[33m"
-#define AZUL_T     "\x1b[34m"
+#define RED_T     "\x1b[31m"
+#define GREEN_T        "\x1b[32m"
+#define YELLOW_T "\x1b[33m"
+#define BLUE_T     "\x1b[34m"
+#define WHITE_T		"\033[0;37m"
 
 typedef struct t_info {
 	int		num_philo;

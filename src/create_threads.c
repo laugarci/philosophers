@@ -37,19 +37,33 @@ int create_all_mutex(t_philo *philo, t_info *info)
 
 void	start_think(t_philo *philo)
 {
-	printf(AMARILLO_T"%d %s\n", philo->philo_id, "is thinking");
+	long time;
+
+	time = get_time() - philo->info->start_time;
+	printf(WHITE_T"%ld ", time);
+	printf(YELLOW_T"%d %s\n", philo->philo_id, "is thinking");
 }
 
 void	start_eat(t_philo *philo)
 {
-	printf(VERDE_T"%d %s\n", philo->philo_id, "has taken left fork");
-	printf(VERDE_T"%d %s\n", philo->philo_id, "has taken right fork");
-	printf(VERDE_T"%d %s\n", philo->philo_id, "is eating");
+	long time;
+
+	time = get_time() - philo->info->start_time;
+	printf(WHITE_T"%ld ", time);
+	printf(GREEN_T"%d %s\n", philo->philo_id, "has taken left fork");
+	printf(WHITE_T"%ld ", time);
+	printf(GREEN_T"%d %s\n", philo->philo_id, "has taken right fork");
+	printf(WHITE_T"%ld ", time);
+	printf(GREEN_T"%d %s\n", philo->philo_id, "is eating");
 }
 
 void	start_sleep(t_philo *philo)
 {
-	printf(AZUL_T"%d %s\n", philo->philo_id, "is sleeping");
+	long time;
+
+	time = get_time() - philo->info->start_time;
+	printf(WHITE_T"%ld ", time);
+	printf(BLUE_T"%d %s\n", philo->philo_id, "is sleeping");
 	usleep(philo->info->time_to_sleep * 1000); 
 }
 
@@ -59,6 +73,7 @@ void	take_forks(t_philo *philo)
 	pthread_mutex_lock(philo->left_fork);
 	pthread_mutex_lock(philo->right_fork);
 	start_eat(philo);
+//	usleep(philo->info->time_to_eat * 1000);
 	pthread_mutex_unlock(&philo->forks);
 }
 
@@ -71,16 +86,19 @@ void	bring_forks(t_philo *philo)
 void *start_routine(void *ph)
 {
     t_philo *philo;
+   long  time;
 
     philo = (t_philo *)ph;
-    int i = 0;
+    philo->info->start_time = get_time();
     while (42)
     {
+	time = get_time() - philo->info->start_time;
+        if (time >= philo->info->time_to_die)
+            pthread_exit(NULL);
 	take_forks(philo);
 	bring_forks(philo);
         start_think(philo);
 	start_sleep(philo);
-	i++;
 	philo->meals_eaten++;
 	if (philo->meals_eaten == philo->info->num_times_must_eat)
 		pthread_exit(NULL);
@@ -120,5 +138,6 @@ int	create_threads(t_philo *philo, t_info *info)
 		i++;
 	}
 	free(philo);
-	return 0;
+	return (0);
+}
 
