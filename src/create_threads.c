@@ -25,9 +25,12 @@ int create_all_mutex(t_philo *philo, t_info *info)
     i = 0;
     while (i < info->num_philo)
     {
-        pthread_mutex_init(&(philo[i].left_fork), NULL); 
-		pthread_mutex_init(&(philo[i].right_fork), NULL);
-        i++;
+	    philo[i].left_fork = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
+	    philo[i].right_fork = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
+	    pthread_mutex_init(philo[i].left_fork, NULL);
+	    pthread_mutex_init(philo[i].right_fork, NULL);
+	    pthread_mutex_init(&philo[i].forks, NULL);
+	    i++;
     }
     return (0);
 }
@@ -52,20 +55,39 @@ void	start_sleep(t_philo *philo)
 	usleep(10000);
 }
 
+void	take_forks(t_philo *philo)
+{
+	pthread_mutex_lock(&philo->forks);
+	pthread_mutex_lock(philo->left_fork);
+	pthread_mutex_lock(philo->right_fork);
+	pthread_mutex_unlock(&philo->forks);
+}
+
+void	bring_forks(t_philo *philo)
+{
+	pthread_mutex_unlock(philo->left_fork);
+	pthread_mutex_unlock(philo->right_fork);
+}
+
 void *start_routine(void *ph)
 {
     t_philo *philo;
 
     philo = (t_philo *)ph;
+    int i = 0;
     while (42)
     {
-        pthread_mutex_lock(&(philo->left_fork)); 
-		pthread_mutex_lock(&(philo->right_fork)); 
+        start_think(philo);
+	take_forks(philo);
+	    pthread_mutex_lock(philo->left_fork); 
+		pthread_mutex_lock(philo->right_fork); 
 		start_eat(philo);
-        pthread_mutex_unlock(&(philo->left_fork)); 
-		pthread_mutex_unlock(&(philo->right_fork)); 
-		start_think(philo);
+        pthread_mutex_unlock(philo->left_fork); 
+		pthread_mutex_unlock(philo->right_fork); 
         start_sleep(philo);
+	i++;
+	if (i == 5)
+		break;
     }
     return (NULL);
 }
@@ -77,11 +99,12 @@ int	create_threads(t_philo *philo, t_info *info)
 	philo = (t_philo*)malloc(sizeof(t_philo) * info->num_philo); //protect malloc
 	create_all_mutex(philo, info);
 	i = 0;
+	
 	while (i < info->num_philo)
 	{
 		philo[i].philo_id = i + 1;
 		philo[i].info = info;
-		pthread_create(&philo[i].threads, NULL, start_routine, &(philo[i]));
+		pthread_create(&philo[i].threads, NULL, start_routine, &philo[i]);
 		i++;
 	}
 	i = 0;
@@ -94,8 +117,10 @@ int	create_threads(t_philo *philo, t_info *info)
 	i = 0;
 	while (i < info->num_philo)
 	{
-		pthread_mutex_destroy(&philo[i].left_fork);
-		pthread_mutex_destroy(&philo[i].right_fork);
+		pthread_mutex_destroy(philo[i].left_fork);
+		pthread_mutex_destroy(philo[i].right_fork);
+		free(philo[i].left_fork);
+		free(philo[i].right_fork);
 		i++;
 	}
 	free(philo);
