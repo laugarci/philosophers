@@ -38,7 +38,6 @@ int create_all_mutex(t_philo *philo, t_info *info)
 void	start_think(t_philo *philo)
 {
 	printf(AMARILLO_T"%d %s\n", philo->philo_id, "is thinking");
-	usleep(10000);
 }
 
 void	start_eat(t_philo *philo)
@@ -46,13 +45,12 @@ void	start_eat(t_philo *philo)
 	printf(VERDE_T"%d %s\n", philo->philo_id, "has taken left fork");
 	printf(VERDE_T"%d %s\n", philo->philo_id, "has taken right fork");
 	printf(VERDE_T"%d %s\n", philo->philo_id, "is eating");
-	usleep(10000);
 }
 
 void	start_sleep(t_philo *philo)
 {
 	printf(AZUL_T"%d %s\n", philo->philo_id, "is sleeping");
-	usleep(10000);
+	usleep(philo->info->time_to_sleep * 1000); 
 }
 
 void	take_forks(t_philo *philo)
@@ -60,6 +58,7 @@ void	take_forks(t_philo *philo)
 	pthread_mutex_lock(&philo->forks);
 	pthread_mutex_lock(philo->left_fork);
 	pthread_mutex_lock(philo->right_fork);
+	start_eat(philo);
 	pthread_mutex_unlock(&philo->forks);
 }
 
@@ -77,17 +76,14 @@ void *start_routine(void *ph)
     int i = 0;
     while (42)
     {
-        start_think(philo);
 	take_forks(philo);
-	    pthread_mutex_lock(philo->left_fork); 
-		pthread_mutex_lock(philo->right_fork); 
-		start_eat(philo);
-        pthread_mutex_unlock(philo->left_fork); 
-		pthread_mutex_unlock(philo->right_fork); 
-        start_sleep(philo);
+	bring_forks(philo);
+        start_think(philo);
+	start_sleep(philo);
 	i++;
-	if (i == 5)
-		break;
+	philo->meals_eaten++;
+	if (philo->meals_eaten == philo->info->num_times_must_eat)
+		pthread_exit(NULL);
     }
     return (NULL);
 }
@@ -125,4 +121,4 @@ int	create_threads(t_philo *philo, t_info *info)
 	}
 	free(philo);
 	return 0;
-}
+

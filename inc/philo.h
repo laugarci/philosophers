@@ -37,7 +37,7 @@ typedef struct t_info {
 
 typedef struct t_philo {
 	int						philo_id;
-	int						num_meals;
+	int						meals_eaten;
 	pthread_mutex_t			*left_fork;
 	pthread_mutex_t			*right_fork;
 	pthread_mutex_t			forks;
