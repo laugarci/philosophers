@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 10:40:50 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/30 19:07:46 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/10/01 17:36:13 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ typedef struct t_philo {
 	pthread_mutex_t			*left_fork;
 	pthread_mutex_t			*right_fork;
 	pthread_mutex_t			forks;
+	pthread_t				threads;
 	struct t_info			*info;
 }							t_philo;
 
@@ -56,10 +57,10 @@ int			create_threads();
 
 void		print_message(int type);
 
-int			create_threads(t_philo *philo, t_info info);
+int			create_threads(t_philo *philo, t_info *info);
 
 int			create_all_mutex(t_philo *philo, t_info *info);
 
-
+long		get_time();
 
 #endif

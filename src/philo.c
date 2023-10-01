@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 10:39:49 by laugarci          #+#    #+#             */
-/*   Updated: 2023/09/30 18:09:13 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/10/01 16:22:39 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,5 +57,5 @@ int	main(int ac, char **av)
 	if (parse_input(av) == -1)
 		return (1);
 	start_vars(av, &info);
-	create_threads(&philo, info);
+	create_threads(&philo, &info);
 }
