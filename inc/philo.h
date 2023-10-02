@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 10:40:50 by laugarci          #+#    #+#             */
-/*   Updated: 2023/10/01 17:36:13 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/10/02 11:19:46 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,15 +33,15 @@ typedef struct t_info {
 	int		time_to_sleep;
 	int		num_times_must_eat;
 	int		num_forks;
+	pthread_mutex_t *forks;
+	pthread_mutex_t print;
 	long	start_time;
 }			t_info;
 
 typedef struct t_philo {
 	int						philo_id;
 	int						meals_eaten;
-	pthread_mutex_t			*left_fork;
-	pthread_mutex_t			*right_fork;
-	pthread_mutex_t			forks;
+	pthread_mutex_t			meal_mutex;
 	pthread_t				threads;
 	struct t_info			*info;
 }							t_philo;
