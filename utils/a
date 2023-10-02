@@ -1,0 +1,108 @@
+void *start_routine(void *ph) {
+    t_philo *philo;
+    long time;
+
+    philo = (t_philo *)ph;
+    philo->info->start_time = get_time();
+    philo->dead = 0;
+    int first_dead = 1; // Variable para controlar la primera vez que muere
+
+    while (42) {
+        time = get_time() - philo->info->start_time;
+        philo->dead = check_dead(philo);
+        
+        if (philo->dead) {
+            if (first_dead) {
+                print_time(philo, RED_T"died\n");
+                first_dead = 0; // Marcar que ya se ha imprimido "dead" una vez
+            }
+            pthread_exit(NULL);
+        }
+
+        philo->dead = start_eat(philo);
+        if (philo->dead) {
+            if (first_dead) {
+                print_time(philo, RED_T"died\n");
+                first_dead = 0;
+            }
+            pthread_exit(NULL);
+        }
+
+        philo->dead = start_think(philo);
+        if (philo->dead) {
+            if (first_dead) {
+                print_time(philo, RED_T"died\n");
+                first_dead = 0;
+            }
+            pthread_exit(NULL);
+        }
+
+        philo->dead = start_sleep(philo);
+        if (philo->dead) {
+            if (first_dead) {
+                print_time(philo, RED_T"died\n");
+                first_dead = 0;
+            }
+            pthread_exit(NULL);
+        }
+
+        if (philo->meals_eaten == philo->info->num_times_must_eat) {
+            pthread_exit(NULL);
+        }
+    }
+
+    if (first_dead) {
+        philo_die(philo);
+    }
+    
+    return NULL;
+}
+ ____________
+
+ #include <stdio.h>
+#include <pthread.h>
+#include <unistd.h>
+
+typedef struct {
+    // Otros campos de la estructura
+    int philo_id;
+    pthread_t threads;
+    // ... otros campos
+    int dead; // Agrega una variable de estado para el hilo
+} t_philo;
+
+void *start_routine(void *ph) {
+    t_philo *philo;
+    long time;
+
+    philo = (t_philo *)ph;
+    philo->info->start_time = get_time();
+    philo->dead = 0;
+    int first_dead = 1;
+
+    while (42) {
+        time = get_time() - philo->info->start_time;
+        philo->dead = check_dead(philo);
+
+        if (philo->dead) {
+            if (first_dead) {
+                pthread_mutex_lock(&philo->info->print);
+                printf(RED_T"[%ld ms]     %d died\n", time, philo->philo_id);
+                pthread_mutex_unlock(&philo->info->print);
+                first_dead = 0;
+
+                // Terminar la ejecución del hilo actual
+                pthread_exit(NULL);
+            }
+        }
+
+        // Resto de tu lógica aquí
+
+        if (philo->meals_eaten == philo->info->num_times_must_eat) {
+            // Terminar la ejecución del hilo actual
+            pthread_exit(NULL);
+        }
+    }
+    return NULL;
+}
+
