@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 10:45:38 by laugarci          #+#    #+#             */
-/*   Updated: 2023/10/03 20:09:23 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/10/03 20:39:50 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int	start_think(t_philo *philo)
 
 	check = print_time(philo, YELLOW_T"is thinking\n");
 	if (check)
-		return (1);
+		return (check);
 	time = get_time() - philo->info->start_time;
 	if (philo->info->dead || time >= philo->info->time_to_die || philo->info->is_print || philo->meals_eaten == philo->info->num_times_must_eat)
 		return (1);
@@ -95,7 +95,7 @@ int	start_eat(t_philo *philo)
 	if (check)
 	{
 		pthread_mutex_unlock(&philo->info->forks[philo->philo_id - 1]);
-		return (1);
+		return (check);
 	}
 	if (philo->philo_id == philo->info->num_philo)
 		pthread_mutex_lock(&philo->info->forks[0]);
@@ -174,7 +174,7 @@ int	check_dead(t_philo *philo)
 	time = get_time() - philo->info->start_time;
 	if (philo->info->dead
            || philo->meals_eaten == philo->info->num_times_must_eat
-          || time >= philo->info->time_to_die)	
+          || time >= philo->info->time_to_die)
 		return (1);
 	return (0);
 }
@@ -195,29 +195,62 @@ void *start_routine(void *ph)
 		 if (philo->info->dead
             || philo->meals_eaten == philo->info->num_times_must_eat
             || time >= philo->info->time_to_die)
-            break ;
+		 {
+			 {
+        	   pthread_mutex_lock(&philo->info->print_dead);
+				   if (philo->info->dead == 1)
+					   philo->info->dead = 2;
+			   pthread_mutex_unlock(&philo->info->print_dead);
+			 }
+			 break ;
+		 }
         philo->info->dead = start_eat(philo);
 		time = get_time() - philo->info->start_time;
         if (philo->info->dead
             || philo->meals_eaten == philo->info->num_times_must_eat
             || time >= philo->info->time_to_die)
-            break ;
+		{
+            	 {
+        	   pthread_mutex_lock(&philo->info->print_dead);
+				   if (philo->info->dead == 1)
+					   philo->info->dead = 2;
+			   pthread_mutex_unlock(&philo->info->print_dead);
+				 }
+			break ;
+		}
         philo->info->dead = start_sleep(philo);
 		time = get_time() - philo->info->start_time;
         if (philo->info->dead
             || philo->meals_eaten == philo->info->num_times_must_eat
             || time >= philo->info->time_to_die)
-            break ;
+		{
+            	 {
+        	   pthread_mutex_lock(&philo->info->print_dead);
+				   if (philo->info->dead == 1)
+					   philo->info->dead = 2;
+			   pthread_mutex_unlock(&philo->info->print_dead);
+			 }
+			break ;
+		}
         philo->info->dead = start_think(philo);
 		time = get_time() - philo->info->start_time;
 		if (philo->info->dead
             || philo->meals_eaten == philo->info->num_times_must_eat
             || time >= philo->info->time_to_die)
-            break ;
+		{
+            	 {
+        	   pthread_mutex_lock(&philo->info->print_dead);
+				   if (philo->info->dead == 1)
+					   philo->info->dead = 2;
+			   pthread_mutex_unlock(&philo->info->print_dead);
+			 }
+			break ;
+		}
 		time = get_time() - philo->info->start_time;
     }
 	pthread_mutex_lock(&philo->info->print_dead);
-    if (!philo->info->is_print && philo->info->dead)
+	time = get_time() - philo->info->start_time;
+    if (!philo->info->is_print && philo->info->dead == 2 && time > philo->info->start_time)
 	{
         philo_die(philo);
         philo->info->is_print = 1;
