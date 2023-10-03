@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 10:39:49 by laugarci          #+#    #+#             */
-/*   Updated: 2023/10/02 11:55:57 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/10/03 14:29:36 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,15 @@ int	start_vars(char **av, t_info *info)
 		return (-1);
 	}
 	info->num_forks = info->num_philo;
+	info->dead = 0;
+	info->is_print = 0;
+	return (0);
+}
+
+int	start_philos(t_philo *philo)
+{
+	philo->philo_id = 0;
+	philo->meals_eaten = 0;
 	return (0);
 }
 
@@ -57,5 +66,6 @@ int	main(int ac, char **av)
 	if (parse_input(av) == -1)
 		return (1);
 	start_vars(av, &info);
+	start_philos(&philo);
 	create_threads(&philo, &info);
 }
