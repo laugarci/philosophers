@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 10:40:50 by laugarci          #+#    #+#             */
-/*   Updated: 2023/10/03 19:54:59 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/10/04 20:29:13 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,11 @@
 #define YELLOW_T "\x1b[33m"
 #define BLUE_T     "\x1b[34m"
 #define WHITE_T		"\033[0;37m"
+#define CYAN_T     "\x1b[36m"
+#define ORANGE_T	"\033[93m"
+#define LBLUE_T		"\033[94m"
+#define MAGENTA_T	"\033[95m"
+#define LCYAN_T		"\033[96m"
 
 typedef struct t_info {
 	int				num_philo;
@@ -39,12 +44,14 @@ typedef struct t_info {
 	pthread_mutex_t	print;
 	pthread_mutex_t	print_dead;
 	pthread_mutex_t	meal_mutex;
+	pthread_mutex_t check_dead;
 	long			start_time;
 }					t_info;
 
 typedef struct t_philo {
 	int						philo_id;
 	int						meals_eaten;
+	long					last_meal;
 	pthread_t				threads;
 	struct t_info			*info;
 }							t_philo;
