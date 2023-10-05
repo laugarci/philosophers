@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 10:45:38 by laugarci          #+#    #+#             */
-/*   Updated: 2023/10/05 18:06:54 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/10/05 18:23:52 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,11 @@ int	create_all_mutex(t_info *info)
 
 void	philo_die(t_philo *philo)
 {
+	long	time;
+
 	pthread_mutex_lock(&philo->info->print);
-	printf(WHITE_T"[%ld ms]      %d %s\n", philo->info->dead_time, philo->philo_id, RED_T"died");
+	time = philo->info->dead_time;
+	printf(WHITE_T"[%ld ms]      %d %s\n", time, philo->philo_id, RED_T"died");
 	pthread_mutex_unlock(&philo->info->print);
 }
 
@@ -80,15 +83,9 @@ void	*start_routine(void *ph)
 		}
 		if (start_eat(philo) == 1)
 			break ;
-		if (check_dead(philo))
-			break ;
 		if (start_sleep(philo) == 1)
 			break ;
-		if (check_dead(philo))
-			break ;
 		if (start_think(philo) == 1)
-			break ;
-		if (check_dead(philo))
 			break ;
 	}
 	final_check(philo);
