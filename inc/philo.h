@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 10:40:50 by laugarci          #+#    #+#             */
-/*   Updated: 2023/10/05 16:10:04 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/10/05 17:22:44 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,14 @@
 # include <pthread.h>
 # include <sys/time.h>
 
-# define RED_T     "\x1b[31m"
-# define GREEN_T        "\x1b[32m"
-# define YELLOW_T "\x1b[33m"
-# define BLUE_T     "\x1b[34m"
+# define RED_T			"\x1b[31m"
+# define GREEN_T		"\x1b[32m"
+# define YELLOW_T		"\x1b[33m"
+# define BLUE_T			"\x1b[34m"
 # define WHITE_T		"\033[0;37m"
-# define CYAN_T     "\x1b[36m"
-# define ORANGE_T	"\033[93m"
+# define CYAN_T			"\x1b[36m"
 # define LBLUE_T		"\033[94m"
-# define MAGENTA_T	"\033[95m"
+# define MAGENTA_T		"\033[95m"
 # define LCYAN_T		"\033[96m"
 
 typedef struct t_info {
@@ -41,18 +40,19 @@ typedef struct t_info {
 	int				philo_full;
 	int				dead;
 	int				is_print;
+	int				meals;
+	long			dead_time;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	print;
 	pthread_mutex_t	print_dead;
 	pthread_mutex_t	check_dead;
-	pthread_mutex_t one_philo;
-	pthread_mutex_t time;
+	pthread_mutex_t	one_philo;
+	pthread_mutex_t	time;
 	long			start_time;
 }					t_info;
 
 typedef struct t_philo {
 	int						philo_id;
-	int						meals_eaten;
 	long long				last_meal;
 	pthread_t				threads;
 	struct t_info			*info;
@@ -89,5 +89,9 @@ int			start_think(t_philo *philo);
 int			check_dead(t_philo	*philo);
 
 void		*start_routine(void *ph);
+
+int			drop_forks(t_philo *philo);
+
+int			take_forks(t_philo *philo);
 
 #endif

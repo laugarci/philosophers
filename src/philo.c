@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 10:39:49 by laugarci          #+#    #+#             */
-/*   Updated: 2023/10/05 16:10:47 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/10/05 16:51:32 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,9 @@ int	start_vars(char **av, t_info *info)
 	{
 		info->num_times_must_eat = ft_atol(av[5]);
 		if (info->num_times_must_eat < 0)
-		{
 			write(1, "Numbers must be positive\n", 25);
+		if (info->num_times_must_eat < 0)
 			return (-1);
-		}
 	}
 	else
 		info->num_times_must_eat = -1;
@@ -38,13 +37,13 @@ int	start_vars(char **av, t_info *info)
 	info->num_forks = info->num_philo;
 	info->dead = 0;
 	info->is_print = 0;
+	info->meals = 0;
 	return (0);
 }
 
 int	start_philos(t_philo *philo)
 {
 	philo->philo_id = 0;
-	philo->meals_eaten = 0;
 	philo->last_meal = 0;
 	return (0);
 }

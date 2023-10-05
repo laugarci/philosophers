@@ -6,13 +6,13 @@
 #    By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/10 11:03:03 by laugarci          #+#    #+#              #
-#    Updated: 2023/10/05 15:57:56 by laugarci         ###   ########.fr        #
+#    Updated: 2023/10/05 17:12:47 by laugarci         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 NAME = philo
 
 SRC_DIR = src/
-SRC_FILES = philo.c atol.c parse_input.c create_threads.c start_routine.c
+SRC_FILES = philo.c atol.c parse_input.c create_threads.c start_routine.c start_eat.c
 
 OBJ_DIR = objs/
 OBJ_FILES = $(SRC_FILES:.c=.o)
