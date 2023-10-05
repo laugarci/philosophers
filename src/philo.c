@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 10:39:49 by laugarci          #+#    #+#             */
-/*   Updated: 2023/10/04 19:25:04 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/10/05 16:10:47 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,40 @@ int	start_philos(t_philo *philo)
 	return (0);
 }
 
-long get_time()
+long	get_time(void)
 {
-	struct timeval time;
+	struct timeval	time;
 
 	gettimeofday(&time, NULL);
 	return (time.tv_sec * 1000 + time.tv_usec / 1000);
+}
+
+int	create_threads(t_philo *philo, t_info *info)
+{
+	long		i;
+
+	philo = (t_philo *)malloc(sizeof(t_philo) * info->num_philo);
+	if (!philo)
+		return (-1);
+	if (create_all_mutex(info) == -1)
+		return (-1);
+	i = 0;
+	while (i < info->num_philo)
+	{
+		philo[i].philo_id = i + 1;
+		philo[i].info = info;
+		pthread_create(&philo[i].threads, NULL, start_routine, &philo[i]);
+		i++;
+	}
+	i = 0;
+	while (i < info->num_philo)
+	{
+		pthread_join(philo[i].threads, NULL);
+		i++;
+	}
+	free(philo);
+	free(info->forks);
+	return (0);
 }
 
 int	main(int ac, char **av)
