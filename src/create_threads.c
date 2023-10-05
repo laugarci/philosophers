@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 10:45:38 by laugarci          #+#    #+#             */
-/*   Updated: 2023/10/05 18:23:52 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/10/05 19:36:20 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ int	create_all_mutex(t_info *info)
 	pthread_mutex_init(&info->print, NULL);
 	pthread_mutex_init(&info->print_dead, NULL);
 	pthread_mutex_init(&info->check_dead, NULL);
+	pthread_mutex_init(&info->time, NULL);
 	return (0);
 }
 
@@ -71,11 +72,15 @@ void	*start_routine(void *ph)
 	t_philo	*philo;
 
 	philo = (t_philo *)ph;
+	pthread_mutex_lock(&philo->info->time);
 	philo->info->start_time = get_time();
+	pthread_mutex_unlock(&philo->info->time);
 	while (!check_dead(philo))
 	{
 		if (check_dead(philo))
+		{
 			break ;
+		}
 		if (philo->info->num_philo == 1)
 		{
 			one_philo(philo);

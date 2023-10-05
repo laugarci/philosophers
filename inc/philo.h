@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 10:40:50 by laugarci          #+#    #+#             */
-/*   Updated: 2023/10/05 17:22:44 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/10/05 19:21:16 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,5 +93,7 @@ void		*start_routine(void *ph);
 int			drop_forks(t_philo *philo);
 
 int			take_forks(t_philo *philo);
+
+void		philo_die(t_philo	*philo);
 
 #endif
