@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 14:41:07 by laugarci          #+#    #+#             */
-/*   Updated: 2023/10/05 19:40:04 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/10/06 12:03:57 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,25 +15,24 @@
 int	check_dead(t_philo *philo)
 {
 	long	time;
-	int		eat;
 
 	pthread_mutex_lock(&philo->info->check_dead);
 	time = get_time() - philo->info->start_time;
+	if (time > 10)
+		time = time - (time % 10);
 	if (philo->info->num_times_must_eat > 0)
 	{
-		eat = philo->info->num_philo * philo->info->num_times_must_eat;
-		if (philo->info->meals >= eat)
+		if (philo->info->meals
+			>= (philo->info->num_philo * philo->info->num_times_must_eat))
 		{
-			philo->info->dead = 1;
 			pthread_mutex_unlock(&philo->info->check_dead);
 			return (1);
 		}
 	}
-	if (philo->info->dead 
-		|| (time - philo->last_meal) > philo->info->time_to_die
-		|| philo->info->is_print)
+	if (philo->info->dead
+		|| (time - philo->last_meal) > philo->info->time_to_die)
 	{
-		philo->info->dead_time = get_time() - philo->info->start_time;
+		philo->info->dead_time = time;
 		philo->info->dead = 1;
 		pthread_mutex_unlock(&philo->info->check_dead);
 		return (1);
@@ -47,16 +46,20 @@ int	print_time(t_philo *philo, char *ms)
 	long	time;
 
 	pthread_mutex_lock(&philo->info->print);
+	time = get_time() - philo->info->start_time;
+	if (time > 10)
+		time = time - (time % 10);
 	if (check_dead(philo))
 	{
-		philo->info->dead = 1;
 		pthread_mutex_unlock(&philo->info->print);
 		return (1);
 	}
-	time = get_time() - philo->info->start_time;
 	printf(WHITE_T"[%ld ms]     %d %s", time, philo->philo_id, ms);
 	if (check_dead(philo))
-		philo->info->dead = 1;
+	{
+		pthread_mutex_unlock(&philo->info->print);
+		return (1);
+	}
 	pthread_mutex_unlock(&philo->info->print);
 	return (0);
 }
@@ -64,25 +67,37 @@ int	print_time(t_philo *philo, char *ms)
 int	start_sleep(t_philo *philo)
 {
 	int	i;
-	if (check_dead(philo))
+
+	if (print_time(philo, LBLUE_T"is sleeping\n") == 1)
 		return (1);
-	print_time(philo, LBLUE_T"is sleeping\n");
 	i = 0;
-	while (i < 6)
+	if ((philo->info->time_to_sleep) > (philo->info->time_to_die / 2))
 	{
-		if (check_dead(philo))
-			return (1);
-		usleep((philo->info->time_to_sleep / 6) * 1000);
-		i++;
+		while (i <= 18)
+		{
+			if (check_dead(philo))
+				return (1);
+			usleep((philo->info->time_to_sleep / 18) * 1000);
+			i++;
+		}
+	}
+	else
+	{
+		while (i < 2)
+		{
+			if (check_dead(philo))
+				return (1);
+			usleep((philo->info->time_to_sleep / 2) * 1000);
+			i++;
+		}
 	}
 	return (0);
 }
 
 int	start_think(t_philo *philo)
 {
-	print_time(philo, LCYAN_T"is thinking\n");
-	if (check_dead(philo))
-		philo->info->dead = 1;
+	if (print_time(philo, LCYAN_T"is thinking\n") == 1)
+		return (1);
 	return (0);
 }
 
@@ -90,26 +105,40 @@ int	start_eat(t_philo *philo)
 {
 	int	i;
 
-	i = 0;
 	if (philo->philo_id % 2 == 0)
 		usleep(50);
-	take_forks(philo);
-	if (check_dead(philo))
-		drop_forks(philo);
+	if (philo->info->num_philo >= 100)
+	{
+		if (philo->philo_id % 2 == 0)
+			usleep(250);
+	}
 	if (check_dead(philo))
 		return (1);
-	print_time(philo, GREEN_T"is eating\n");
+	take_forks(philo);
+	if (print_time(philo, GREEN_T"is eating\n"))
+		return (1);
 	philo->info->meals++;
 	philo->last_meal = get_time() - philo->info->start_time;
-	while (i < 4)
+	i = 0;
+	if (philo->info->time_to_eat > (philo->info->time_to_die / 2))
 	{
-		usleep((philo->info->time_to_eat / 4) * 1000);
-		if (check_dead(philo))
+		while (i <= 18)
 		{
-			drop_forks(philo);
-			return (1);
+			if (check_dead(philo))
+			{
+				drop_forks(philo);
+				return (1);
+			}
+			usleep((philo->info->time_to_eat / 18) * 1000);
+			i++;
 		}
-		i++;
+	}
+	else
+		usleep(philo->info->time_to_eat * 1000);
+	if (check_dead(philo))
+	{
+		drop_forks(philo);
+		return (1);
 	}
 	drop_forks(philo);
 	return (0);

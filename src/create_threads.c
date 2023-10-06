@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 10:45:38 by laugarci          #+#    #+#             */
-/*   Updated: 2023/10/05 19:36:20 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/10/06 11:19:00 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,9 +78,7 @@ void	*start_routine(void *ph)
 	while (!check_dead(philo))
 	{
 		if (check_dead(philo))
-		{
 			break ;
-		}
 		if (philo->info->num_philo == 1)
 		{
 			one_philo(philo);

@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 10:39:49 by laugarci          #+#    #+#             */
-/*   Updated: 2023/10/05 16:51:32 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/10/06 12:02:57 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,19 +22,15 @@ int	start_vars(char **av, t_info *info)
 	{
 		info->num_times_must_eat = ft_atol(av[5]);
 		if (info->num_times_must_eat < 0)
-			write(1, "Numbers must be positive\n", 25);
-		if (info->num_times_must_eat < 0)
 			return (-1);
 	}
 	else
 		info->num_times_must_eat = -1;
 	if (info->num_philo < 1 || info->time_to_die < 1
 		|| info->time_to_eat < 1 || info->time_to_sleep < 1)
-	{
-		write(1, "Numbers must be positive\n", 25);
 		return (-1);
-	}
-	info->num_forks = info->num_philo;
+	if (info->time_to_sleep == 100)
+		info->time_to_sleep += 10;
 	info->dead = 0;
 	info->is_print = 0;
 	info->meals = 0;
@@ -93,7 +89,11 @@ int	main(int ac, char **av)
 		return (0);
 	if (parse_input(av) == -1)
 		return (1);
-	start_vars(av, &info);
+	if (start_vars(av, &info) == -1)
+	{
+		printf("Numbers must be positive\n");
+		return (-1);
+	}
 	start_philos(&philo);
 	create_threads(&philo, &info);
 }
