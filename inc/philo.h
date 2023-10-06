@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 10:40:50 by laugarci          #+#    #+#             */
-/*   Updated: 2023/10/05 19:21:16 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/10/06 14:49:15 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ typedef struct t_info {
 	pthread_mutex_t	check_dead;
 	pthread_mutex_t	one_philo;
 	pthread_mutex_t	time;
+	pthread_mutex_t	test;
 	long			start_time;
 }					t_info;
 
@@ -95,5 +96,7 @@ int			drop_forks(t_philo *philo);
 int			take_forks(t_philo *philo);
 
 void		philo_die(t_philo	*philo);
+
+void		ft_usleep(t_philo	*philo);
 
 #endif

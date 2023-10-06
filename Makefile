@@ -6,7 +6,7 @@
 #    By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/10 11:03:03 by laugarci          #+#    #+#              #
-#    Updated: 2023/10/05 17:12:47 by laugarci         ###   ########.fr        #
+#    Updated: 2023/10/06 15:09:13 by laugarci         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 NAME = philo
@@ -22,7 +22,7 @@ DEP_FILES = $(SRC_FILES:.c=.d)
 DEPS = $(addprefix $(OBJ_DIR), $(DEP_FILES))
 
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -MMD #-fsanitize=thread
+CFLAGS = -Wall -Wextra -Werror -MMD -fsanitize=thread
 RM = rm -f
 INCLUDE = -I ./inc/
 

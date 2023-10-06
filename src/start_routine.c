@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 14:41:07 by laugarci          #+#    #+#             */
-/*   Updated: 2023/10/06 12:03:57 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/10/06 15:15:41 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,11 +55,6 @@ int	print_time(t_philo *philo, char *ms)
 		return (1);
 	}
 	printf(WHITE_T"[%ld ms]     %d %s", time, philo->philo_id, ms);
-	if (check_dead(philo))
-	{
-		pthread_mutex_unlock(&philo->info->print);
-		return (1);
-	}
 	pthread_mutex_unlock(&philo->info->print);
 	return (0);
 }
@@ -67,29 +62,21 @@ int	print_time(t_philo *philo, char *ms)
 int	start_sleep(t_philo *philo)
 {
 	int	i;
+	int	num;
 
 	if (print_time(philo, LBLUE_T"is sleeping\n") == 1)
 		return (1);
 	i = 0;
 	if ((philo->info->time_to_sleep) > (philo->info->time_to_die / 2))
-	{
-		while (i <= 18)
-		{
-			if (check_dead(philo))
-				return (1);
-			usleep((philo->info->time_to_sleep / 18) * 1000);
-			i++;
-		}
-	}
+		num = 14;
 	else
+		num = 2;
+	while (i < num)
 	{
-		while (i < 2)
-		{
-			if (check_dead(philo))
-				return (1);
-			usleep((philo->info->time_to_sleep / 2) * 1000);
-			i++;
-		}
+		if (check_dead(philo))
+			return (1);
+		usleep((philo->info->time_to_sleep / num) * 1000);
+		i++;
 	}
 	return (0);
 }
@@ -105,16 +92,9 @@ int	start_eat(t_philo *philo)
 {
 	int	i;
 
-	if (philo->philo_id % 2 == 0)
-		usleep(50);
-	if (philo->info->num_philo >= 100)
-	{
-		if (philo->philo_id % 2 == 0)
-			usleep(250);
-	}
-	if (check_dead(philo))
+	ft_usleep(philo);
+	if (take_forks(philo))
 		return (1);
-	take_forks(philo);
 	if (print_time(philo, GREEN_T"is eating\n"))
 		return (1);
 	philo->info->meals++;
@@ -122,7 +102,7 @@ int	start_eat(t_philo *philo)
 	i = 0;
 	if (philo->info->time_to_eat > (philo->info->time_to_die / 2))
 	{
-		while (i <= 18)
+		while (i < 18)
 		{
 			if (check_dead(philo))
 			{
@@ -135,11 +115,5 @@ int	start_eat(t_philo *philo)
 	}
 	else
 		usleep(philo->info->time_to_eat * 1000);
-	if (check_dead(philo))
-	{
-		drop_forks(philo);
-		return (1);
-	}
-	drop_forks(philo);
-	return (0);
+	return (drop_forks(philo));
 }
