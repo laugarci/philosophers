@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 10:39:49 by laugarci          #+#    #+#             */
-/*   Updated: 2023/10/06 12:02:57 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/10/08 12:28:06 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	start_vars(char **av, t_info *info)
 		|| info->time_to_eat < 1 || info->time_to_sleep < 1)
 		return (-1);
 	if (info->time_to_sleep == 100)
-		info->time_to_sleep += 10;
+		info->time_to_sleep += 20;
 	info->dead = 0;
 	info->is_print = 0;
 	info->meals = 0;

@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 10:45:38 by laugarci          #+#    #+#             */
-/*   Updated: 2023/10/06 15:12:28 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/10/08 13:22:08 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,9 @@ int	create_all_mutex(t_info *info)
 		i++;
 	}
 	pthread_mutex_init(&info->print, NULL);
-	pthread_mutex_init(&info->print_dead, NULL);
+	pthread_mutex_init(&info->t_last_meal, NULL);
 	pthread_mutex_init(&info->check_dead, NULL);
 	pthread_mutex_init(&info->time, NULL);
-	pthread_mutex_init(&info->test, NULL);
 	return (0);
 }
 
@@ -47,7 +46,7 @@ void	one_philo(t_philo *philo)
 {
 	print_time(philo, YELLOW_T"has taken right fork\n");
 	usleep(philo->info->time_to_die * 1000);
-	philo->info->dead_time = get_time() - philo->info->start_time;
+	philo->info->dead_time = time_now(philo);
 	philo->info->dead = 1;
 }
 
@@ -55,29 +54,27 @@ void	final_check(t_philo *philo)
 {
 	long	time;
 
-	pthread_mutex_lock(&philo->info->print_dead);
-	time = get_time() - philo->info->start_time;
+	time = time_now(philo);
+	pthread_mutex_lock(&philo->info->check_dead);
 	if (!philo->info->is_print && philo->info->dead
 		&& time - philo->last_meal >= philo->info->time_to_die)
 	{
-		philo_die(philo);
 		philo->info->is_print = 1;
+		philo_die(philo);
 	}
-	pthread_mutex_unlock(&philo->info->print_dead);
+	pthread_mutex_unlock(&philo->info->check_dead);
 }
 
 void	*start_routine(void *ph)
 {
 	t_philo	*philo;
-	
+
 	philo = (t_philo *)ph;
 	pthread_mutex_lock(&philo->info->time);
 	philo->info->start_time = get_time();
 	pthread_mutex_unlock(&philo->info->time);
-	while (!check_dead(philo))
+	while (42)
 	{
-//		if (check_dead(philo))
-//			break ;
 		if (philo->info->num_philo == 1)
 		{
 			one_philo(philo);
