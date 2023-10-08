@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 10:39:49 by laugarci          #+#    #+#             */
-/*   Updated: 2023/10/08 12:28:06 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/10/08 14:52:17 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ int	start_philos(t_philo *philo)
 {
 	philo->philo_id = 0;
 	philo->last_meal = 0;
+	philo->ph_meal = 0;
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 10:40:50 by laugarci          #+#    #+#             */
-/*   Updated: 2023/10/08 12:42:29 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/10/08 15:00:22 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ typedef struct t_philo {
 	int						philo_id;
 	long long				last_meal;
 	pthread_t				threads;
+	int						ph_meal;
 	struct t_info			*info;
 }							t_philo;
 
@@ -95,7 +96,7 @@ int			take_forks(t_philo *philo);
 
 void		philo_die(t_philo	*philo);
 
-void		ft_usleep(t_philo	*philo);
+int			ft_usleep(t_philo	*philo);
 
 long		time_now(t_philo *philo);
 

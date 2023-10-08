@@ -6,7 +6,7 @@
 /*   By: laugarci <laugarci@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 10:45:38 by laugarci          #+#    #+#             */
-/*   Updated: 2023/10/08 13:22:08 by laugarci         ###   ########.fr       */
+/*   Updated: 2023/10/08 16:16:45 by laugarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,15 @@ void	philo_die(t_philo *philo)
 
 void	one_philo(t_philo *philo)
 {
+	long	time;
+
+	time = time_now(philo);
+	pthread_mutex_lock(&philo->info->forks[philo->philo_id - 1]);
 	print_time(philo, YELLOW_T"has taken right fork\n");
-	usleep(philo->info->time_to_die * 1000);
+	while (time_now(philo) < (time + philo->info->time_to_die))
+		usleep(10);
 	philo->info->dead_time = time_now(philo);
+	pthread_mutex_unlock(&philo->info->forks[philo->philo_id - 1]);
 	philo->info->dead = 1;
 }
 
